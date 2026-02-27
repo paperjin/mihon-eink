@@ -1,0 +1,22 @@
+<resources>
+    <style name="Theme.MihonEink" parent="Theme.Material3.Light.NoActionBar">
+        <!-- E-Ink flat design colors -->
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#000000</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorOnBackground">#000000</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#000000</item>
+        <item name="colorSecondary">#666666</item>
+        <item name="colorOnSecondary">#000000</item>
+        
+        <!-- No shadows, rounded corners for e-ink -->
+        <item name="elevationEnabled">false</item>
+        <item name="cornerSize">0dp</item>
+        
+        <!-- Flat colors for better contrast -->
+        <item name="cardBackgroundColor">#FFFFFF</item>
+        <item name="colorCardBackgroundColor">#FFFFFF</item>
+    </style>
+</resources>
