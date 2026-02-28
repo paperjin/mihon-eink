@@ -85,7 +85,27 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ## Status
 
-🚧 **Work in progress** - Core structure being designed
+✅ **E-ink frontend structure complete**
+
+**Implemented:**
+- ✅ Project structure with Gradle
+- ✅ EinkMainActivity with keyboard input handling
+- ✅ NavigationController for state management
+- ✅ Page-based pages: Library, Search, Settings, Sources, Manga
+- ✅ Flat e-ink theme (grayscale, no shadows)
+- ✅ Keyboard navigation (arrow keys + Enter/Escape)
+
+**To Do:**
+- ⏳ Connect to Mihon core data layer
+- ⏳ Add real manga source integration
+- ⏳ Implement chapter list display
+- ⏳ Add reader page integration
+- ⏳ Build and test on actual device
+
+**Build status:**
+```bash
+cd app && ./gradlew assembleDebug
+```
 
 ## License
 
