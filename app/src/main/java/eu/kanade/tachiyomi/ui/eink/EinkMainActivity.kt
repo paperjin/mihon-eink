@@ -1,3 +1,5 @@
+package eu.kanade.tachiyomi.eink
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 

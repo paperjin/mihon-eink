@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Mihon E-Ink</string>
-    
-    <!-- Navigation -->
-    <string name="nav_library">Library</string>
-    <string name="nav_sources">Sources</string>
-    <string name="nav_search">Search</string>
-    <string name="nav_settings">Settings</string>
-    
-    <!-- UI Text -->
-    <string name="page_back">Back</string>
-    <string name="page_next">Next</string>
-    <string name="page_prev">Previous</string>
-    
-    <!-- Actions -->
-    <string name="action_open">Open</string>
-    <string name="action_add">Add to Library</string>
-    <string name="action_cancel">Cancel</string>
-    <string name="action_ok">OK</string>
+    <string name="app_name">Mihon E-ink</string>
 </resources>

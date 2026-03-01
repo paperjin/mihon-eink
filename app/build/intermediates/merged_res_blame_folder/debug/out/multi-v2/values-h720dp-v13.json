@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "eu.kanade.tachiyomi.ui.eink.app-mergeDebugResources-51:/values-h720dp-v13/values-h720dp-v13.xml",
+            "outputFile": "eu.kanade.tachiyomi.eink.app-mergeDebugResources-26:/values-h720dp-v13/values-h720dp-v13.xml",
             "map": [
                 {
-                    "source": "/var/home/albert/.gradle/caches/transforms-3/a1b8fd091d6ba7e0e698e032657346a4/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/1c7052863e4032e1622d57c13cfbbf7b/transformed/appcompat-1.6.1/res/values-h720dp-v13/values-h720dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

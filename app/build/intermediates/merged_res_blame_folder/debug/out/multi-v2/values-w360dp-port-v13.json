@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "eu.kanade.tachiyomi.ui.eink.app-mergeDebugResources-51:/values-w360dp-port-v13/values-w360dp-port-v13.xml",
+            "outputFile": "eu.kanade.tachiyomi.eink.app-mergeDebugResources-26:/values-w360dp-port-v13/values-w360dp-port-v13.xml",
             "map": [
                 {
-                    "source": "/var/home/albert/.gradle/caches/transforms-3/838fe797cad0689a2325dcfbda7e1b76/transformed/material-1.11.0/res/values-w360dp-port-v13/values-w360dp-port-v13.xml",
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/d3c15532480a4b7f221d6cd4eaf5e961/transformed/material-1.9.0/res/values-w360dp-port-v13/values-w360dp-port-v13.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

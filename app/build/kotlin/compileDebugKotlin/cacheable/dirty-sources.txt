@@ -1,7 +1,0 @@
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/pages/SourceListPage.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/model/NavigationController.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/EinkMainActivity.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/pages/LibraryPage.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/pages/SettingsPage.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/pages/SearchPage.kt
-/var/home/albert/.openclaw/workspace/mihon-eink/app/src/main/java/eu/kanade/tachiyomi/ui/eink/pages/MangaPage.kt
