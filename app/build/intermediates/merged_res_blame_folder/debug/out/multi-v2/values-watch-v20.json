@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "eu.kanade.tachiyomi.ui.eink.app-mergeDebugResources-51:/values-watch-v20/values-watch-v20.xml",
+            "map": [
+                {
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/a1b8fd091d6ba7e0e698e032657346a4/transformed/appcompat-1.6.1/res/values-watch-v20/values-watch-v20.xml",
+                    "from": {
+                        "startLines": "2,5,8",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,214,385",
+                        "endLines": "4,7,10",
+                        "endColumns": "12,12,12",
+                        "endOffsets": "209,380,553"
+                    }
+                }
+            ]
+        }
+    ]
+}

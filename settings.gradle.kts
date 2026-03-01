@@ -14,4 +14,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Mihon E-Ink"
-include ':app'
+include("app")

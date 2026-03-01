@@ -1,0 +1,34 @@
+[
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/layout_activity_main.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/layout/activity_main.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/xml_provider_paths.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/xml/provider_paths.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/mipmap_ic_launcher.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/mipmap/ic_launcher.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/mipmap-anydpi_ic_launcher_round.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/mipmap-anydpi/ic_launcher_round.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/mipmap_ic_launcher_round.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/mipmap/ic_launcher_round.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/xml_data_extraction_rules.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/xml_backup_rules.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "eu.kanade.tachiyomi.ui.eink.app-merged_res-53:/mipmap-anydpi_ic_launcher.xml.flat",
+        "source": "eu.kanade.tachiyomi.ui.eink.app-main-55:/mipmap-anydpi/ic_launcher.xml"
+    }
+]

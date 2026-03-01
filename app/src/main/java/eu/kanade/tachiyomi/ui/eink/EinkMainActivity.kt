@@ -3,8 +3,8 @@ package eu.kanade.tachiyomi.ui.eink
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,8 +23,7 @@ class EinkMainActivity : ComponentActivity() {
         
         setContent {
             MihonEinkTheme {
-                val navigationState = remember { NavigationController().getState() }
-                EinkNavigation(navigationState = navigationState)
+                EinkNavigation()
             }
         }
     }
@@ -38,7 +37,7 @@ fun MihonEinkTheme(content: @Composable () -> Unit) {
 }
 
 @Composable
-fun EinkNavigation(navigationState: PageState) {
+fun EinkNavigation() {
     Box(
         modifier = Modifier
             .fillMaxSize()

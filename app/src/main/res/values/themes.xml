@@ -11,12 +11,8 @@
         <item name="colorSecondary">#666666</item>
         <item name="colorOnSecondary">#000000</item>
         
-        <!-- No shadows, rounded corners for e-ink -->
-        <item name="elevationEnabled">false</item>
-        <item name="cornerSize">0dp</item>
-        
         <!-- Flat colors for better contrast -->
-        <item name="cardBackgroundColor">#FFFFFF</item>
-        <item name="colorCardBackgroundColor">#FFFFFF</item>
+        <item name="colorContainer">#FFFFFF</item>
+        <item name="colorOnContainer">#000000</item>
     </style>
 </resources>

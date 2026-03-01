@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "eu.kanade.tachiyomi.ui.eink.app-mergeDebugResources-51:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/3a3a76822fdf467928c2c596967e0ad5/transformed/core-1.12.0/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/a1b8fd091d6ba7e0e698e032657346a4/transformed/appcompat-1.6.1/res/values-v16/values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}

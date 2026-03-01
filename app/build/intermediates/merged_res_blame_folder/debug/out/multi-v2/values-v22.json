@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "eu.kanade.tachiyomi.ui.eink.app-mergeDebugResources-51:/values-v22/values-v22.xml",
+            "map": [
+                {
+                    "source": "/var/home/albert/.gradle/caches/transforms-3/a1b8fd091d6ba7e0e698e032657346a4/transformed/appcompat-1.6.1/res/values-v22/values-v22.xml",
+                    "from": {
+                        "startLines": "2,3,4,9",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,130,217,487",
+                        "endLines": "2,3,8,13",
+                        "endColumns": "74,86,12,12",
+                        "endOffsets": "125,212,482,764"
+                    }
+                }
+            ]
+        }
+    ]
+}
