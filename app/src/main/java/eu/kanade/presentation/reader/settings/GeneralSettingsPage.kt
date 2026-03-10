@@ -46,6 +46,8 @@ internal fun ColumnScope.GeneralPage(screenModel: ReaderSettingsScreenModel) {
     val flashColorPref = screenModel.preferences.flashColor()
     val flashColor by flashColorPref.collectAsState()
 
+    val showStatusOverlay by screenModel.preferences.showStatusOverlay().collectAsState()
+
     SettingsChipRow(MR.strings.pref_reader_theme) {
         themes.map { (labelRes, value) ->
             FilterChip(
@@ -55,11 +57,6 @@ internal fun ColumnScope.GeneralPage(screenModel: ReaderSettingsScreenModel) {
             )
         }
     }
-
-    CheckboxItem(
-        label = stringResource(MR.strings.pref_show_page_number),
-        pref = screenModel.preferences.showPageNumber(),
-    )
 
     CheckboxItem(
         label = stringResource(MR.strings.pref_fullscreen),
@@ -98,6 +95,12 @@ internal fun ColumnScope.GeneralPage(screenModel: ReaderSettingsScreenModel) {
         label = stringResource(MR.strings.pref_flash_page),
         pref = screenModel.preferences.flashOnPageChange(),
     )
+    
+    CheckboxItem(
+        label = "Show status overlay",
+        pref = screenModel.preferences.showStatusOverlay(),
+    )
+    
     if (flashPageState) {
         SliderItem(
             value = flashMillis / ReaderPreferences.MILLI_CONVERSION,

@@ -498,6 +498,8 @@ class ReaderActivity : BaseActivity() {
                 menuToggleToast = toast(if (enabled) MR.strings.on else MR.strings.off)
             },
             onClickSettings = viewModel::openSettingsDialog,
+            // E-ink: Show custom status overlay from preference
+            showStatusOverlay = readerPreferences.showStatusOverlay().collectAsState().value,
         )
     }
 
@@ -810,27 +812,32 @@ class ReaderActivity : BaseActivity() {
     private inner class ReaderConfig {
 
         private fun getCombinedPaint(grayscale: Boolean, invertedColors: Boolean): Paint {
-            return Paint().apply {
-                colorFilter = ColorMatrixColorFilter(
-                    ColorMatrix().apply {
-                        if (grayscale) {
-                            setSaturation(0f)
-                        }
-                        if (invertedColors) {
-                            postConcat(
-                                ColorMatrix(
-                                    floatArrayOf(
-                                        -1f, 0f, 0f, 0f, 255f,
-                                        0f, -1f, 0f, 0f, 255f,
-                                        0f, 0f, -1f, 0f, 255f,
-                                        0f, 0f, 0f, 1f, 0f,
-                                    ),
+            val paint = Paint()
+            // Enable dithering for E-Ink (helps with gradients on 1-bit displays)
+            paint.setDither(true)
+            paint.setFilterBitmap(true)
+            
+            paint.colorFilter = ColorMatrixColorFilter(
+                ColorMatrix().apply {
+                    if (grayscale) {
+                        setSaturation(0f)
+                    }
+                    if (invertedColors) {
+                        postConcat(
+                            ColorMatrix(
+                                floatArrayOf(
+                                    -1f, 0f, 0f, 0f, 255f,
+                                    0f, -1f, 0f, 0f, 255f,
+                                    0f, 0f, -1f, 0f, 255f,
+                                    0f, 0f, 0f, 1f, 0f,
                                 ),
-                            )
-                        }
-                    },
-                )
-            }
+                            ),
+                        )
+                    }
+                },
+            )
+            
+            return paint
         }
 
         private val grayBackgroundColor = Color.rgb(0x20, 0x21, 0x25)
@@ -867,9 +874,11 @@ class ReaderActivity : BaseActivity() {
             combine(
                 readerPreferences.grayscale().changes(),
                 readerPreferences.invertedColors().changes(),
-            ) { grayscale, invertedColors -> grayscale to invertedColors }
-                .onEach { (grayscale, invertedColors) ->
-                    setLayerPaint(grayscale, invertedColors)
+            ) { grayscale, invertedColors ->
+                Pair(grayscale, invertedColors)
+            }
+                .onEach { pair ->
+                    setLayerPaint(pair.first, pair.second)
                 }
                 .launchIn(lifecycleScope)
 
@@ -960,7 +969,9 @@ class ReaderActivity : BaseActivity() {
             viewModel.setBrightnessOverlayValue(value)
         }
         private fun setLayerPaint(grayscale: Boolean, invertedColors: Boolean) {
-            val paint = if (grayscale || invertedColors) getCombinedPaint(grayscale, invertedColors) else null
+            val paint = if (grayscale || invertedColors) {
+                getCombinedPaint(grayscale, invertedColors)
+            } else null
             binding.viewerContainer.setLayerType(LAYER_TYPE_HARDWARE, paint)
         }
     }

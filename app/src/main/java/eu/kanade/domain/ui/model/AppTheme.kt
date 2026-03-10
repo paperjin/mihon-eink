@@ -4,6 +4,7 @@ import dev.icerock.moko.resources.StringResource
 import tachiyomi.i18n.MR
 
 enum class AppTheme(val titleRes: StringResource?) {
+    MONOCHROME(MR.strings.theme_monochrome),
     DEFAULT(MR.strings.label_default),
     MONET(MR.strings.theme_monet),
     CATPPUCCIN(MR.strings.theme_catppuccin),
@@ -17,7 +18,6 @@ enum class AppTheme(val titleRes: StringResource?) {
     TIDAL_WAVE(MR.strings.theme_tidalwave),
     YINYANG(MR.strings.theme_yinyang),
     YOTSUBA(MR.strings.theme_yotsuba),
-    MONOCHROME(MR.strings.theme_monochrome),
 
     // Deprecated
     DARK_BLUE(null),
