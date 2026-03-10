@@ -144,7 +144,7 @@ But they need software optimized for their unique characteristics:
 Pull requests are welcome! For major changes, please open an issue first.
 
 ### Areas We'd Love Help On:
-- Library pagination with volume key navigation
+- Library pagination with volume key navigation 🏗️ (in progress)
 - De-scrolling the UI (replace scrolls with pages/buttons)
 - E-Ink-specific performance optimizations
 - Documentation improvements

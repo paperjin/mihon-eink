@@ -176,6 +176,11 @@ class LibraryPreferences(
     fun autoClearChapterCache() = preferenceStore.getBoolean("auto_clear_chapter_cache", false)
 
     fun hideMissingChapters() = preferenceStore.getBoolean("pref_hide_missing_chapter_indicators", false)
+
+    // E-Ink pagination
+    fun libraryPagination() = preferenceStore.getBoolean("pref_library_pagination_eink", false)
+    fun libraryPageItems() = preferenceStore.getInt("pref_library_page_items", 12)
+
     // endregion
 
     // region Swipe Actions
