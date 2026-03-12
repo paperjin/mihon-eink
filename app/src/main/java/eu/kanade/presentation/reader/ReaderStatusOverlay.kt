@@ -45,8 +45,8 @@ import java.util.Locale
 fun ReaderStatusOverlay(
     currentPage: Int,
     totalPages: Int,
-    currentChapter: String,
-    totalChapters: Int,
+    currentChapter: String?,
+    totalChapters: Int?,
     visible: Boolean,
 ) {
     val context = LocalContext.current
@@ -104,64 +104,94 @@ fun ReaderStatusOverlay(
         enter = fadeIn(animationSpec = tween(0)),
         exit = fadeOut(animationSpec = tween(0)),
     ) {
-        // Bottom-left corner positioning
-        Box(
-            modifier = Modifier
-                .padding(bottom = 8.dp, start = 8.dp),
-        ) {
-            Surface(
-                color = Color.Transparent,
-                shape = MaterialTheme.shapes.small,
+        Box(modifier = Modifier.fillMaxWidth()) {
+            
+            // LEFT SIDE: Time, Battery, WiFi
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(bottom = 2.dp, start = 8.dp),
             ) {
-                Row(
-                    modifier = Modifier.padding(2.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                Surface(
+                    color = Color.Transparent,
+                    shape = MaterialTheme.shapes.small,
                 ) {
-                    // Time (stroke+text for outline)
-                    Box {
-                        Text(text = timeText, style = strokeStyle)
-                        Text(text = timeText, style = timeStyle)
+                    Row(
+                        modifier = Modifier.padding(2.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        // Time (stroke+text for outline)
+                        Box {
+                            Text(text = timeText, style = strokeStyle)
+                            Text(text = timeText, style = timeStyle)
+                        }
+                        
+                        // Divider
+                        Box(
+                            modifier = Modifier
+                                .width(1.dp)
+                                .height(16.dp)
+                                .background(Color(128, 128, 128, 64)),
+                        )
+                        
+                        // Battery: text with outline
+                        Box {
+                            Text(text = batteryText, style = strokeStyle)
+                            Text(text = batteryText, style = timeStyle)
+                        }
+                        
+                        // Divider
+                        Box(
+                            modifier = Modifier
+                                .width(1.dp)
+                                .height(16.dp)
+                                .background(Color(128, 128, 128, 64)),
+                        )
+                        
+                        // WiFi: text with outline
+                        Box {
+                            Text(text = if (wifiConnected) "WiFi" else "", style = strokeStyle)
+                            Text(text = if (wifiConnected) "WiFi" else "", style = timeStyle)
+                        }
                     }
-                    
-                    // Divider
-                    Box(
-                        modifier = Modifier
-                            .width(1.dp)
-                            .height(16.dp)
-                            .background(Color(128, 128, 128, 64)),
-                    )
-                    
-                    // Battery: text with outline
-                    Box {
-                        Text(text = batteryText, style = strokeStyle)
-                        Text(text = batteryText, style = timeStyle)
+                }
+            }
+            
+            // RIGHT SIDE: Chapter + Page info
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 2.dp, end = 8.dp),
+            ) {
+                Surface(
+                    color = Color.Transparent,
+                    shape = MaterialTheme.shapes.small,
+                ) {
+                    Row(
+                        modifier = Modifier.padding(2.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        // Chapter info
+                        if (currentChapter != null && totalChapters != null) {
+                            val chapterText = "ch. ${currentChapter}/$totalChapters"
+                            val pageText = "pg. $currentPage/$totalPages"
+                            val combinedText = "$chapterText $pageText"
+                            
+                            Box {
+                                Text(text = combinedText, style = strokeStyle)
+                                Text(text = combinedText, style = timeStyle)
+                            }
+                        } else {
+                            // Fallback to just page info
+                            val pageText = "pg. $currentPage/$totalPages"
+                            Box {
+                                Text(text = pageText, style = strokeStyle)
+                                Text(text = pageText, style = timeStyle)
+                            }
+                        }
                     }
-                    
-                    // Divider
-                    Box(
-                        modifier = Modifier
-                            .width(1.dp)
-                            .height(16.dp)
-                            .background(Color(128, 128, 128, 64)),
-                    )
-                    
-                    // WiFi: text with outline
-                    Box {
-                        Text(text = if (wifiConnected) "WiFi" else "", style = strokeStyle)
-                        Text(text = if (wifiConnected) "WiFi" else "", style = timeStyle)
-                    }
-                    
-                    // Divider
-                    Box(
-                        modifier = Modifier
-                            .width(1.dp)
-                            .height(16.dp)
-                            .background(Color(128, 128, 128, 64)),
-                    )
-                    
-                    // Page indicator
-                    ReaderPageIndicator(currentPage = currentPage, totalPages = totalPages)
                 }
             }
         }
