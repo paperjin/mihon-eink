@@ -174,8 +174,11 @@ fun ReaderStatusOverlay(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         // Chapter info
-                        if (currentChapter != null && totalChapters != null) {
-                            val chapterText = "ch. ${currentChapter}/$totalChapters"
+                        if (currentChapter != null && totalChapters != null && totalChapters > 0) {
+                            // Extract just the chapter number from strings like "Chapter002 (12MiB)" or "ch. 2"
+                            val chapterNum = extractChapterNumber(currentChapter)
+                            
+                            val chapterText = "ch. $chapterNum/$totalChapters"
                             val pageText = "pg. $currentPage/$totalPages"
                             val combinedText = "$chapterText $pageText"
                             
@@ -196,4 +199,30 @@ fun ReaderStatusOverlay(
             }
         }
     }
+}
+
+/**
+ * Extract chapter number from various chapter title formats:
+ * - "Chapter002 (12MiB)" → 2
+ * - "ch. 2" → 2  
+ * - "Chapter 2" → 2
+ * - "002" → 2
+ */
+private fun extractChapterNumber(chapterTitle: String): Int {
+    // Try to find digits after "Chapter" or "ch"
+    val chapterRegex = Regex("(?:Chapter|ch)\\s*(\\d+)", RegexOption.IGNORE_CASE)
+    val match = chapterRegex.find(chapterTitle)
+    
+    if (match != null) {
+        return match.groupValues[1].toIntOrNull() ?: 0
+    }
+    
+    // Fallback: try to get first number sequence
+    val numberRegex = Regex("(\\d+)")
+    val numberMatch = numberRegex.find(chapterTitle)
+    if (numberMatch != null) {
+        return numberMatch.groupValues[1].toIntOrNull() ?: 0
+    }
+    
+    return 0
 }
