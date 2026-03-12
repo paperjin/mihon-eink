@@ -340,6 +340,7 @@ class ReaderViewModel @JvmOverloads constructor(
                 it.copy(
                     viewerChapters = newChapters,
                     bookmarked = newChapters.currChapter.chapter.bookmark,
+                    totalChapters = chapterList.size,
                 )
             }
         }
@@ -962,6 +963,7 @@ class ReaderViewModel @JvmOverloads constructor(
         val bookmarked: Boolean = false,
         val isLoadingAdjacentChapter: Boolean = false,
         val currentPage: Int = -1,
+        val totalChapters: Int = 0,
 
         /**
          * Viewer used to display the pages (pager, webtoon, ...).

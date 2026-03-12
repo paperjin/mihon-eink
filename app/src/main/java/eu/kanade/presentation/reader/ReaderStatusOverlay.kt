@@ -15,11 +15,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Wifi
+import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -118,8 +123,8 @@ fun ReaderStatusOverlay(
                 ) {
                     Row(
                         modifier = Modifier.padding(2.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.Bottom,
                     ) {
                         // Time (stroke+text for outline)
                         Box {
@@ -135,10 +140,14 @@ fun ReaderStatusOverlay(
                                 .background(Color(128, 128, 128, 64)),
                         )
                         
-                        // Battery: text with outline
+                        // Battery: text with outline (green when charging)
+                        val batteryColor = if (isCharging) Color(0xFF4CAF50) else Color(235, 235, 235)
+                        val batteryStrokeColor = if (isCharging) Color(0xFF1B5E20) else Color(45, 45, 45)
+                        val batteryStyle = timeStyle.copy(color = batteryColor)
+                        val batteryStrokeStyle = batteryStyle.copy(color = batteryStrokeColor, drawStyle = Stroke(width = 4f))
                         Box {
-                            Text(text = batteryText, style = strokeStyle)
-                            Text(text = batteryText, style = timeStyle)
+                            Text(text = batteryText, style = batteryStrokeStyle)
+                            Text(text = batteryText, style = batteryStyle)
                         }
                         
                         // Divider
@@ -149,7 +158,7 @@ fun ReaderStatusOverlay(
                                 .background(Color(128, 128, 128, 64)),
                         )
                         
-                        // WiFi: text with outline
+                        // WiFi: text (back to text, cleaner)
                         Box {
                             Text(text = if (wifiConnected) "WiFi" else "", style = strokeStyle)
                             Text(text = if (wifiConnected) "WiFi" else "", style = timeStyle)

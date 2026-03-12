@@ -62,6 +62,7 @@ fun ReaderAppBars(
     enabledPrevious: Boolean,
     currentPage: Int,
     totalPages: Int,
+    totalChapters: Int,
     onPageIndexChange: (Int) -> Unit,
 
     readingMode: ReadingMode,
@@ -116,7 +117,7 @@ fun ReaderAppBars(
                     currentPage = currentPage,
                     totalPages = totalPages,
                     currentChapter = chapterTitle ?: "Chapter",
-                    totalChapters = 0,  // Can be retrieved from reader state if needed
+                    totalChapters = totalChapters,
                     visible = true,  // Always show during reading
                 )
             }
