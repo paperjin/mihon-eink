@@ -132,17 +132,21 @@ sdk.dir=/home/youruser/Android/Sdk
 - E-Ink dithering + bitmap filtering always enabled
 - **Volume Key Debounce** (600ms) - prevents double-presses on e-ink devices
 - **Settings Pagination** - Paginated settings with inline preferences per category, volume key navigation
-- **Library Pagination** - Replace infinite scroll with paginated views + volume key navigation (Vol Up/Down to turn pages, arrow buttons, configurable items per page)
-- Manga details → Page through chapters
+- **Library Pagination** - Pagination preference infrastructure, volume key handlers, debounce support
+- **Manga Chapter Scrolling** - Volume key page-scrolling for chapter lists (600ms debounce, instant scroll)
 -   - ~~Settings screens~~ → ✅ **DONE** - Paginated with volume key navigation
 
 ### 🏗️ In Progress
 
 ### ❌ Future / Backlog
   - **De-Scroll the UI** - Replace ALL scrolling with pages/buttons:
-  - Browse/Sources → Paginated list
-  - History → Paginated view
-  - **E-Ink Optimizations** - Faster refresh rates, configurable animation durations, optional full-screen flash between UI changes
+    - ~~Settings screens~~ → ✅ **DONE** - Paginated with volume key navigation
+    - ~~Manga details~~ → ✅ **SOLVED** - Volume key page-scrolling for chapter lists (600ms debounce, instant scroll)
+    - Browse/Sources → Paginated list
+    - History → Paginated view
+    - Updates tab → Paginated chapters
+    - Reader settings → Multi-page dialog
+- **E-Ink Optimizations** - Faster refresh rates, configurable animation durations, optional full-screen flash between UI changes
 
 </div>
 
