@@ -17,6 +17,7 @@ Last Updated: 2026-03-10
 - [x] **Volume Key Debounce** - 600ms gate to prevent double-presses on e-ink devices (PagerViewer + WebtoonViewer)
 - [x] **Settings Pagination** - Paginated settings with inline preferences, volume key navigation, removed More tab icon
 - [x] **Library Pagination** - Pagination preference infrastructure, volume key handlers, debounce support
+- [x] **Manga Chapter Scrolling** - Volume key page-scrolling for chapter lists (scrolls by visible items, 600ms debounce, no animation)
 
 ### v0.19.4-eink
 - [x] Initial e-ink optimizations
@@ -49,10 +50,10 @@ Last Updated: 2026-03-10
 
 **Areas to tackle:**
 - [x] **Settings screens** → ✅ Paginated with volume key navigation
+- [x] **Manga details** → ✅ **SOLVED** - Volume key page-scrolling for chapter lists (scrolls by visible items, 600ms debounce, no animation)
 - [ ] **Browse/Sources** → Paginated list
 - [ ] **History** → Paginated view
 - [ ] **Updates tab** → Paginated chapters
-- [ ] **Manga details** → Page through chapters instead of scroll
 - [ ] **Reader settings** → Multi-page dialog
 
 **Notes:**
