@@ -14,6 +14,16 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 ### Improved
 - Rework internals for better performance ([@Lolle2000la](https://github.com/Lolle2000la)) ([#2955](https://github.com/mihonapp/mihon/pull/2955))
 
+## [v0.19.5-eink] - 2026-03-12
+### Added (E-Ink Fork)
+- Settings Pagination - Paginated settings with inline preferences per category, volume key navigation (Vol Up/Down), dot + numeric page indicators ([@paperjin](https://github.com/paperjin))
+- Volume Key Debounce - 600ms gate to prevent double-presses on e-ink devices (PagerViewer + WebtoonViewer) ([@paperjin](https://github.com/paperjin))
+- Removed More tab icon to eliminate scrolling ([@paperjin](https://github.com/paperjin))
+- Added Musnap to e-ink device examples in README ([@paperjin](https://github.com/paperjin))
+
+### Changed (E-Ink Fork)
+- Settings now respect `pref_library_pagination_eink` preference for conditional pagination ([@paperjin](https://github.com/paperjin))
+
 ## [v0.19.4] - 2026-02-25
 ### Added
 - Automatically remove downloads on Suwayomi after reading, configurable via extension settings ([@cpiber](https://github.com/cpiber)) ([#2673](https://github.com/mihonapp/mihon/pull/2673))
