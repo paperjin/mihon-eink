@@ -7,7 +7,7 @@
 # mihon-eink
 
 ### E-Ink Optimized Manga Reader
-A fork of [Mihon](https://github.com/mihonapp/mihon) optimized for E-Ink Android devices (e.g., Onyx Boox, Hisense, reMarkable).
+A fork of [Mihon](https://github.com/mihonapp/mihon) optimized for E-Ink Android devices (e.g., Onyx Boox, Hisense, reMarkable, Musnap).
 
 **Discover and read manga, webtoons, comics, and more – easier than ever on E-Ink displays.**
 
