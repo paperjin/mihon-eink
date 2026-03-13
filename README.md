@@ -19,7 +19,9 @@ A fork of [Mihon](https://github.com/mihonapp/mihon) optimized for E-Ink Android
 
 ## Download
 
-[![mihon-eink Latest](https://img.shields.io/github/v/release/paperjin/mihon-eink.svg?maxAge=3600&label=Latest&labelColor=06599d&color=043b69)](https://github.com/paperjin/mihon-eink/releases)
+[![mihon-eink Latest](https://img.shields.io/github/v/release/paperjin/mihon-eink.svg?maxAge=3600&label=Latest&labelColor=06599d&color=043b69)](https://github.com/paperjin/mihon-eink/releases/latest)
+
+[⬇️ **Download APK (v0.19.5-eink)**](https://github.com/paperjin/mihon-eink/releases/download/v0.19.5-eink/app-universal-debug.apk)
 
 *Requires Android 8.0 or higher.*
 
