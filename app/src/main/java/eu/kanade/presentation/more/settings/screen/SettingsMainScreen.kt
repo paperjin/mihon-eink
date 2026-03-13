@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -44,7 +43,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import tachiyomi.presentation.core.util.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -105,7 +103,10 @@ object SettingsMainScreen : Screen() {
         val topBarState = rememberTopAppBarState()
 
         // E-Ink pagination state for settings categories
-        val settingsPagerState = rememberPagerState(0) { items.size }
+        val settingsPagerState = rememberPagerState(
+            initialPage = 0,
+            pageCount = { items.size }
+        )
 
         // Focus requester for volume key capture
         val pagerFocusRequester = remember { FocusRequester() }
@@ -138,7 +139,6 @@ object SettingsMainScreen : Screen() {
             },
             containerColor = containerColor,
             content = { contentPadding ->
-                // Paginated view (HorizontalPager) - always enabled
                 // Focus for volume key capture
                 LaunchedEffect(Unit) {
                     pagerFocusRequester.requestFocus()
