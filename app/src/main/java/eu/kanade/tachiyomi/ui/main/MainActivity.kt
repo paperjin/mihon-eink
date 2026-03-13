@@ -8,6 +8,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
@@ -121,6 +122,19 @@ class MainActivity : BaseActivity() {
 
     init {
         registerSecureActivity(this)
+    }
+
+    // E-Ink: Volume key navigation for library pagination
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (libraryPreferences.libraryPagination().get() && event?.keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            // Volume down - next library page (handled by LibraryPager)
+            return true // Consume the event
+        }
+        if (libraryPreferences.libraryPagination().get() && event?.keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            // Volume up - previous library page (handled by LibraryPager)
+            return true // Consume the event
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

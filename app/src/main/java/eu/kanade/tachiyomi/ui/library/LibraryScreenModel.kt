@@ -597,6 +597,25 @@ class LibraryScreenModel(
             .asState(screenModelScope)
     }
 
+    // E-Ink pagination
+    fun getPaginationEnabled(): PreferenceMutableState<Boolean> {
+        return libraryPreferences.libraryPagination().asState(screenModelScope)
+    }
+
+    fun getPaginationItemsPerPage(): PreferenceMutableState<Int> {
+        return libraryPreferences.libraryPageItems().asState(screenModelScope)
+    }
+
+    fun libraryPageNext() {
+        // Volume down - next page (handled in LibraryPager via pager state)
+        // This is a placeholder - actual navigation happens in LibraryPager
+    }
+
+    fun libraryPagePrevious() {
+        // Volume up - previous page (handled in LibraryPager via pager state)
+        // This is a placeholder - actual navigation happens in LibraryPager
+    }
+
     fun getRandomLibraryItemForCurrentCategory(): LibraryItem? {
         val state = state.value
         return state.getItemsForCategoryId(state.activeCategory?.id).randomOrNull()

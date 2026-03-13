@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,6 +46,9 @@ fun LibraryContent(
     getDisplayMode: (Int) -> PreferenceMutableState<LibraryDisplayMode>,
     getColumnsForOrientation: (Boolean) -> PreferenceMutableState<Int>,
     getItemsForCategory: (Category) -> List<LibraryItem>,
+    // E-Ink pagination preferences
+    getPaginationEnabled: () -> PreferenceMutableState<Boolean>,
+    getPaginationItemsPerPage: () -> PreferenceMutableState<Int>,
 ) {
     Column(
         modifier = Modifier.padding(
@@ -90,6 +94,9 @@ fun LibraryContent(
                 }
             },
         ) {
+            val paginationEnabled by getPaginationEnabled()
+            val itemsPerPage by getPaginationItemsPerPage()
+            
             LibraryPager(
                 state = pagerState,
                 contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding()),
@@ -110,6 +117,9 @@ fun LibraryContent(
                 },
                 onLongClickManga = onToggleRangeSelection,
                 onClickContinueReading = onContinueReadingClicked,
+                // E-Ink pagination
+                isPaginationEnabled = paginationEnabled,
+                itemsPerPage = itemsPerPage,
             )
         }
 

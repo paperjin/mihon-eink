@@ -218,6 +218,23 @@ object SettingsLibraryScreen : SearchableSettings {
         return Preference.PreferenceGroup(
             title = stringResource(MR.strings.pref_behavior),
             preferenceItems = persistentListOf(
+                // E-Ink pagination
+                Preference.PreferenceItem.SwitchPreference(
+                    preference = libraryPreferences.libraryPagination(),
+                    title = "E-Ink pagination",
+                    subtitle = "Replace infinite scroll with paginated library views",
+                ),
+                Preference.PreferenceItem.ListPreference(
+                    preference = libraryPreferences.libraryPageItems(),
+                    entries = mapOf(
+                        6 to "6 items/page",
+                        12 to "12 items/page",
+                        18 to "18 items/page",
+                        24 to "24 items/page",
+                    ).toImmutableMap(),
+                    title = "Items per page",
+                    subtitle = "How many items to show per page in E-Ink mode",
+                ),
                 Preference.PreferenceItem.ListPreference(
                     preference = libraryPreferences.swipeToStartAction(),
                     entries = persistentMapOf(
