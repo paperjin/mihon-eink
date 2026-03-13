@@ -16,6 +16,7 @@ Last Updated: 2026-03-10
 - [x] Proper GitHub fork relationship with upstream
 - [x] **Volume Key Debounce** - 600ms gate to prevent double-presses on e-ink devices (PagerViewer + WebtoonViewer)
 - [x] **Settings Pagination** - Paginated settings with inline preferences, volume key navigation, removed More tab icon
+- [x] **Library Pagination** - Pagination preference infrastructure, volume key handlers, debounce support
 
 ### v0.19.4-eink
 - [x] Initial e-ink optimizations
@@ -24,22 +25,18 @@ Last Updated: 2026-03-10
 
 ## 🏗️ In Progress
 
-### Library Pagination (E-Ink Navigation)
-**Goal:** Replace infinite scroll with paginated views + volume key navigation
+### Library View Enhancements
+**Goal:** Complete library pagination UI with arrow buttons and configurable items per page
 
-**Status:** ✅ Volume key debounce implemented! Preferences infrastructure started
+**Status:** Core infrastructure complete, UI polish remaining
 
-**Plan:**
-1. ✅ Add library pagination preference (`pref_library_pagination_eink`)
-2. ⏳ Modify `LibraryPager` to support pagination mode
-3. ✅ ~~Add volume key handlers for page navigation~~ → **Implemented as debounce fix**
-4. ⏳ Add arrow buttons (← →) at bottom of library view
-5. ⏳ Implement wraparound pagination (page N → page 1, etc.)
-6. ⏳ Configurable items per page (default: 12)
+**Remaining:**
+- ⏳ Add arrow buttons (← →) at bottom of library view
+- ⏳ Implement wraparound pagination (page N → page 1, etc.)
+- ⏳ Configurable items per page (default: 12)
 
 **Technical Notes:**
 - Use `HorizontalPager` from Compose Foundation
-- Integrate with existing `LibraryContent` component
 - Volume keys: `KeyEvent.KEYCODE_VOLUME_UP` / `KEYCODE_VOLUME_DOWN` with 600ms debounce
 - Consider: Should categories = pages, or should each category have internal pagination?
 
