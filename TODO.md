@@ -15,6 +15,7 @@ Last Updated: 2026-03-10
 - [x] README with full E-Ink feature documentation
 - [x] Proper GitHub fork relationship with upstream
 - [x] **Volume Key Debounce** - 600ms gate to prevent double-presses on e-ink devices (PagerViewer + WebtoonViewer)
+- [x] **Settings Pagination** - Paginated settings with inline preferences, volume key navigation, removed More tab icon
 
 ### v0.19.4-eink
 - [x] Initial e-ink optimizations
@@ -50,7 +51,7 @@ Last Updated: 2026-03-10
 **Goal:** Replace ALL scrolling with pages/buttons for E-Ink friendliness
 
 **Areas to tackle:**
-- [ ] **Settings screens** → Tabbed pages or arrow navigation
+- [x] **Settings screens** → ✅ Paginated with volume key navigation
 - [ ] **Browse/Sources** → Paginated list
 - [ ] **History** → Paginated view
 - [ ] **Updates tab** → Paginated chapters
