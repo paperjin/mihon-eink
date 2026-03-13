@@ -6,7 +6,7 @@ Last Updated: 2026-03-10
 
 ## ✅ Completed
 
-### v0.19.4-eink (Current)
+### v0.19.5-eink (Current)
 - [x] Status Overlay (bottom-left: time, battery, WiFi, page count)
 - [x] Monochrome theme as default
 - [x] Analytics + Crashlytics disabled by default
@@ -14,6 +14,10 @@ Last Updated: 2026-03-10
 - [x] E-Ink dithering + bitmap filtering always enabled
 - [x] README with full E-Ink feature documentation
 - [x] Proper GitHub fork relationship with upstream
+- [x] **Volume Key Debounce** - 600ms gate to prevent double-presses on e-ink devices (PagerViewer + WebtoonViewer)
+
+### v0.19.4-eink
+- [x] Initial e-ink optimizations
 
 ---
 
@@ -22,12 +26,12 @@ Last Updated: 2026-03-10
 ### Library Pagination (E-Ink Navigation)
 **Goal:** Replace infinite scroll with paginated views + volume key navigation
 
-**Status:** Preferences infrastructure started
+**Status:** ✅ Volume key debounce implemented! Preferences infrastructure started
 
 **Plan:**
 1. ✅ Add library pagination preference (`pref_library_pagination_eink`)
 2. ⏳ Modify `LibraryPager` to support pagination mode
-3. ⏳ Add volume key handlers for page navigation (Vol Up/Down)
+3. ✅ ~~Add volume key handlers for page navigation~~ → **Implemented as debounce fix**
 4. ⏳ Add arrow buttons (← →) at bottom of library view
 5. ⏳ Implement wraparound pagination (page N → page 1, etc.)
 6. ⏳ Configurable items per page (default: 12)
@@ -35,7 +39,7 @@ Last Updated: 2026-03-10
 **Technical Notes:**
 - Use `HorizontalPager` from Compose Foundation
 - Integrate with existing `LibraryContent` component
-- Volume keys: `KeyEvent.KEYCODE_VOLUME_UP` / `KEYCODE_VOLUME_DOWN`
+- Volume keys: `KeyEvent.KEYCODE_VOLUME_UP` / `KEYCODE_VOLUME_DOWN` with 600ms debounce
 - Consider: Should categories = pages, or should each category have internal pagination?
 
 ---
@@ -46,12 +50,17 @@ Last Updated: 2026-03-10
 **Goal:** Replace ALL scrolling with pages/buttons for E-Ink friendliness
 
 **Areas to tackle:**
-- [ ] Settings screens → Tabbed pages or arrow navigation
-- [ ] Browse/Sources → Paginated list
-- [ ] History → Paginated view
-- [ ] Updates tab → Paginated chapters
-- [ ] Manga details → Page through chapters instead of scroll
-- [ ] Reader settings → Multi-page dialog
+- [ ] **Settings screens** → Tabbed pages or arrow navigation
+- [ ] **Browse/Sources** → Paginated list
+- [ ] **History** → Paginated view
+- [ ] **Updates tab** → Paginated chapters
+- [ ] **Manga details** → Page through chapters instead of scroll
+- [ ] **Reader settings** → Multi-page dialog
+
+**Notes:**
+- Every scroll interaction causes e-ink refresh artifacts
+- Buttons/arrows preferred over swipe gestures
+- Consider: Should this be global setting or per-screen?
 
 ### E-Ink Optimizations
 - [ ] Faster refresh rates / screen mode switching

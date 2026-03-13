@@ -1,13 +1,23 @@
 package eu.kanade.presentation.more.settings.screen
 
+import android.view.KeyEvent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.CollectionsBookmark
@@ -21,17 +31,27 @@ import androidx.compose.material.icons.outlined.Storage
 import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -45,6 +65,7 @@ import eu.kanade.presentation.more.settings.widget.TextPreferenceWidget
 import eu.kanade.presentation.util.LocalBackPress
 import eu.kanade.presentation.util.Screen
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.launch
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
@@ -80,6 +101,21 @@ object SettingsMainScreen : Screen() {
         val containerColor = if (twoPane) getPalerSurface() else MaterialTheme.colorScheme.surface
         val topBarState = rememberTopAppBarState()
 
+        // E-Ink pagination state for settings categories
+        val settingsPagerState = rememberPagerState(
+            initialPage = 0,
+            pageCount = { items.size }
+        )
+
+        // Focus requester for volume key capture
+        val pagerFocusRequester = remember { FocusRequester() }
+        
+        // Debounce state for volume keys (matches PagerViewer logic)
+        val lastVolumePressState = remember { mutableLongStateOf(0L) }
+        val debounceMs = 600L // 600ms debounce to prevent double-presses on e-ink
+        
+        val scope = rememberCoroutineScope()
+
         Scaffold(
             topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topBarState),
             topBar = { scrollBehavior ->
@@ -102,31 +138,66 @@ object SettingsMainScreen : Screen() {
             },
             containerColor = containerColor,
             content = { contentPadding ->
-                val state = rememberLazyListState()
-                val indexSelected = if (twoPane) {
-                    items.indexOfFirst { it.screen::class == navigator.items.first()::class }
-                        .also {
-                            LaunchedEffect(Unit) {
-                                state.animateScrollToItem(it)
-                                if (it > 0) {
-                                    // Lift scroll
-                                    topBarState.contentOffset = topBarState.heightOffsetLimit
-                                }
-                            }
-                        }
-                } else {
-                    null
+                // Focus for volume key capture
+                LaunchedEffect(Unit) {
+                    pagerFocusRequester.requestFocus()
                 }
 
-                LazyColumn(
-                    state = state,
-                    contentPadding = contentPadding,
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .focusRequester(pagerFocusRequester)
+                        .focusable()
+                        .onPreviewKeyEvent { event ->
+                            val now = System.currentTimeMillis()
+                            if (now - lastVolumePressState.longValue < debounceMs) {
+                                // Too soon, consume but don't action
+                                return@onPreviewKeyEvent true
+                            }
+                            
+                            when (event.nativeKeyEvent.keyCode) {
+                                KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                                    lastVolumePressState.longValue = now
+                                    // Volume down - next page
+                                    scope.launch {
+                                        if (settingsPagerState.currentPage < settingsPagerState.pageCount - 1) {
+                                            settingsPagerState.scrollToPage(settingsPagerState.currentPage + 1)
+                                        } else {
+                                            settingsPagerState.scrollToPage(0) // wraparound
+                                        }
+                                    }
+                                    true
+                                }
+                                KeyEvent.KEYCODE_VOLUME_UP -> {
+                                    lastVolumePressState.longValue = now
+                                    // Volume up - previous page
+                                    scope.launch {
+                                        if (settingsPagerState.currentPage > 0) {
+                                            settingsPagerState.scrollToPage(settingsPagerState.currentPage - 1)
+                                        } else {
+                                            settingsPagerState.scrollToPage(settingsPagerState.pageCount - 1) // wraparound
+                                        }
+                                    }
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
                 ) {
-                    itemsIndexed(
-                        items = items,
-                        key = { _, item -> item.hashCode() },
-                    ) { index, item ->
-                        val selected = indexSelected == index
+                    // HorizontalPager for settings categories - e-ink friendly (no animations)
+                    HorizontalPager(
+                        modifier = Modifier.weight(1f),
+                        state = settingsPagerState,
+                        verticalAlignment = Alignment.Top,
+                        beyondViewportPageCount = 1,
+                    ) { page ->
+                        val item = items[page]
+                        val selected = if (twoPane) {
+                            items.indexOfFirst { it.screen::class == navigator.items.first()::class } == page
+                        } else {
+                            false
+                        }
+                        
                         var modifier: Modifier = Modifier
                         var contentColor = LocalContentColor.current
                         if (twoPane) {
@@ -144,15 +215,59 @@ object SettingsMainScreen : Screen() {
                                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                             }
                         }
+                        
                         CompositionLocalProvider(LocalContentColor provides contentColor) {
-                            TextPreferenceWidget(
-                                modifier = modifier,
-                                title = stringResource(item.titleRes),
-                                subtitle = item.formatSubtitle(),
-                                icon = item.icon,
-                                onPreferenceClick = { navigator.navigate(item.screen, twoPane) },
-                            )
+                            Column(
+                                modifier = modifier.padding(contentPadding),
+                                verticalArrangement = Arrangement.spacedBy(4.dp),
+                            ) {
+                                TextPreferenceWidget(
+                                    modifier = modifier,
+                                    title = stringResource(item.titleRes),
+                                    subtitle = item.formatSubtitle(),
+                                    icon = item.icon,
+                                    onPreferenceClick = { navigator.navigate(item.screen, twoPane) },
+                                )
+                            }
                         }
+                    }
+
+                    // Page indicators at the bottom (dots + numbers)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        // Dot indicators
+                        repeat(settingsPagerState.pageCount) { page ->
+                            Box(
+                                modifier = Modifier
+                                    .size(if (page == settingsPagerState.currentPage) 12.dp else 8.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(
+                                        if (page == settingsPagerState.currentPage) {
+                                            MaterialTheme.colorScheme.primary
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                        }
+                                    ),
+                            )
+                            if (page < settingsPagerState.pageCount - 1) {
+                                Box(modifier = Modifier.padding(horizontal = 4.dp))
+                            }
+                        }
+                        
+                        // Spacer between dots and numbers
+                        Box(modifier = Modifier.padding(horizontal = 16.dp))
+                        
+                        // Page number indicator
+                        Text(
+                            text = "${settingsPagerState.currentPage + 1} / ${settingsPagerState.pageCount}",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        )
                     }
                 }
             },
