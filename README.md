@@ -120,20 +120,28 @@ sdk.dir=/home/youruser/Android/Sdk
 
 ---
 
-## 📖 Why E-Ink?
+## 📋 Roadmap & TODO
 
-E-Ink displays are fantastic for reading:
-- **Weeks of battery life**
-- **Paper-like readability** in any lighting
-- **No eye strain** from backlights
-- **Distraction-free** experience
+### ✅ Completed
+- Status Overlay (time, battery, WiFi, page count)
+- Monochrome theme as default
+- Analytics + Crashlytics disabled by default
+- E-Ink dithering + bitmap filtering always enabled
+- **Volume Key Debounce** (600ms) - prevents double-presses on e-ink devices
 
-But they need software optimized for their unique characteristics:
-- Slow refresh rates → instant transitions, no animations
-- 1-bit color depth → dithering, high contrast modes
-- Limited RAM → efficient memory management
+### 🏗️ In Progress
+- **Library Pagination** - Replace infinite scroll with paginated views + volume key navigation (Vol Up/Down to turn pages, arrow buttons, configurable items per page)
 
-**mihon-eink** is built with these constraints in mind.
+### ❌ Future / Backlog
+- **De-Scroll the UI** - Replace ALL scrolling with pages/buttons:
+  - Settings screens → Tabbed pages
+  - Browse/Sources → Paginated list
+  - History → Paginated view
+  - Updates tab → Paginated chapters
+  - Manga details → Page through chapters
+  - Reader settings → Multi-page dialog
+- **E-Ink Optimizations** - Faster refresh rates, configurable animation durations, optional full-screen flash between UI changes
+- **Hardcoded Source Research** - Komanga compatibility, local file sources
 
 ---
 
@@ -143,11 +151,7 @@ But they need software optimized for their unique characteristics:
 
 Pull requests are welcome! For major changes, please open an issue first.
 
-### Areas We'd Love Help On:
-- Library pagination with volume key navigation 🏗️ (in progress)
-- De-scrolling the UI (replace scrolls with pages/buttons)
-- E-Ink-specific performance optimizations
-- Documentation improvements
+See the [Roadmap & TODO](#-roadmap--todo) section above for areas we'd love help on.
 
 ---
 
