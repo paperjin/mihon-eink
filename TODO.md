@@ -128,3 +128,17 @@ git push origin main
 ---
 
 **Note:** Keep this file updated as features ship!
+
+---
+
+## Development Workflow
+
+**Rule:** Do NOT push commits until tested on device first!
+
+1. **Make code changes** (spawn coding subagent)
+2. **Build debug APK** (gradle assembleDebug)
+3. **Install APK to musnap** (adb install)
+4. **TEST on device** (wait for Albert to verify)
+5. **THEN commit + push** (only after approval)
+
+**Important:** Coding subagents should build AND install APK before reporting completion. Git commits happen after device testing passes.

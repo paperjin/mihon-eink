@@ -7,6 +7,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,8 +61,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.icerock.moko.resources.StringResource
 import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.components.AppBarActions
+import eu.kanade.presentation.more.settings.PreferenceScreen
 import eu.kanade.presentation.more.settings.screen.about.AboutScreen
-import eu.kanade.presentation.more.settings.widget.TextPreferenceWidget
 import eu.kanade.presentation.util.LocalBackPress
 import eu.kanade.presentation.util.Screen
 import kotlinx.collections.immutable.persistentListOf
@@ -185,6 +186,7 @@ object SettingsMainScreen : Screen() {
                         }
                 ) {
                     // HorizontalPager for settings categories - e-ink friendly (no animations)
+                    // Each page now shows ALL settings for that category inline
                     HorizontalPager(
                         modifier = Modifier.weight(1f),
                         state = settingsPagerState,
@@ -217,16 +219,36 @@ object SettingsMainScreen : Screen() {
                         }
                         
                         CompositionLocalProvider(LocalContentColor provides contentColor) {
+                            // Render category header + all settings inline
                             Column(
                                 modifier = modifier.padding(contentPadding),
-                                verticalArrangement = Arrangement.spacedBy(4.dp),
                             ) {
-                                TextPreferenceWidget(
-                                    modifier = modifier,
-                                    title = stringResource(item.titleRes),
-                                    subtitle = item.formatSubtitle(),
-                                    icon = item.icon,
-                                    onPreferenceClick = { navigator.navigate(item.screen, twoPane) },
+                                // Category header
+                                Text(
+                                    text = stringResource(item.titleRes),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                                )
+                                
+                                // Render all settings for this category inline
+                                // Only screens implementing SearchableSettings have getPreferences()
+                                val preferences = when (item.screen) {
+                                    SettingsAppearanceScreen -> SettingsAppearanceScreen.getPreferences()
+                                    SettingsLibraryScreen -> SettingsLibraryScreen.getPreferences()
+                                    SettingsReaderScreen -> SettingsReaderScreen.getPreferences()
+                                    SettingsDownloadScreen -> SettingsDownloadScreen.getPreferences()
+                                    SettingsTrackingScreen -> SettingsTrackingScreen.getPreferences()
+                                    SettingsBrowseScreen -> SettingsBrowseScreen.getPreferences()
+                                    SettingsDataScreen -> SettingsDataScreen.getPreferences()
+                                    SettingsSecurityScreen -> SettingsSecurityScreen.getPreferences()
+                                    SettingsAdvancedScreen -> SettingsAdvancedScreen.getPreferences()
+                                    else -> emptyList()
+                                }
+                                
+                                PreferenceScreen(
+                                    items = preferences,
+                                    contentPadding = PaddingValues(0.dp),
                                 )
                             }
                         }

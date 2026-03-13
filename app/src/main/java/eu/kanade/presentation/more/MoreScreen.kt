@@ -49,9 +49,6 @@ fun MoreScreen(
             modifier = Modifier.padding(contentPadding),
         ) {
             item {
-                LogoHeader()
-            }
-            item {
                 SwitchPreferenceWidget(
                     title = stringResource(MR.strings.label_downloaded_only),
                     subtitle = stringResource(MR.strings.downloaded_only_summary),
