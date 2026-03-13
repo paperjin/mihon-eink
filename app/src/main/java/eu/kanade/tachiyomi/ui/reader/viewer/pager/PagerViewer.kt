@@ -385,7 +385,7 @@ abstract class PagerViewer(val activity: ReaderActivity) : Viewer {
      */
     // Debounce timer for volume keys - prevents double presses on e-ink devices
     private var lastVolumeKeyTime: Long = 0
-    private val VOLUME_KEY_DEBOUNCE_MS = 300L
+    private val VOLUME_KEY_DEBOUNCE_MS = 600L
 
     override fun handleKeyEvent(event: KeyEvent): Boolean {
         val isUp = event.action == KeyEvent.ACTION_UP

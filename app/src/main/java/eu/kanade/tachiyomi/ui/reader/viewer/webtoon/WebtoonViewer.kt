@@ -303,7 +303,7 @@ class WebtoonViewer(val activity: ReaderActivity, val isContinuous: Boolean = tr
 
     // Debounce timer for volume keys - prevents double presses on e-ink devices
     private var lastVolumeKeyTime: Long = 0
-    private val VOLUME_KEY_DEBOUNCE_MS = 300L
+    private val VOLUME_KEY_DEBOUNCE_MS = 600L
 
     /**
      * Called from the containing activity when a key [event] is received. It should return true

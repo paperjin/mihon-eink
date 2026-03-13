@@ -138,7 +138,7 @@ fun LibraryPager(
             val pagerFocusRequester = remember { FocusRequester() }
             
             // Debounce for volume keys to prevent double-presses
-            var lastVolumePress by remember { mutableLongStateOf(0L) }
+            val lastVolumePressState = remember { mutableLongStateOf(0L) }
             val debounceMs = 300L // 300ms between presses
             
             // Volume key handler - same logic as arrow buttons with debounce
@@ -147,14 +147,14 @@ fun LibraryPager(
                 .focusable()
                 .onPreviewKeyEvent { event ->
                     val now = System.currentTimeMillis()
-                    if (now - lastVolumePress < debounceMs) {
+                    if (now - lastVolumePressState.longValue < debounceMs) {
                         // Too soon, consume but don't action
                         return@onPreviewKeyEvent true
                     }
                     
                     when (event.nativeKeyEvent.keyCode) {
                         KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                            lastVolumePress = now
+                            lastVolumePressState.longValue = now
                             // Same as right arrow - next page
                             itemsScope.launch {
                                 if (itemsPagerState.currentPage < itemsPagerState.pageCount - 1) {
@@ -166,7 +166,7 @@ fun LibraryPager(
                             true
                         }
                         KeyEvent.KEYCODE_VOLUME_UP -> {
-                            lastVolumePress = now
+                            lastVolumePressState.longValue = now
                             // Same as left arrow - previous page
                             itemsScope.launch {
                                 if (itemsPagerState.currentPage > 0) {
