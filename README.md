@@ -129,9 +129,10 @@ sdk.dir=/home/youruser/Android/Sdk
 - E-Ink dithering + bitmap filtering always enabled
 - **Volume Key Debounce** (600ms) - prevents double-presses on e-ink devices
 - **Settings Pagination** - Paginated settings with inline preferences per category, volume key navigation
+- **Library Pagination** - Preference infrastructure, volume key handlers, debounce support
 
 ### 🏗️ In Progress
-- **Library Pagination** - Replace infinite scroll with paginated views + volume key navigation (Vol Up/Down to turn pages, arrow buttons, configurable items per page)
+- **Library View Enhancements** - Arrow buttons, wraparound pagination, configurable items per page
 
 ### ❌ Future / Backlog
 - **De-Scroll the UI** - Replace ALL scrolling with pages/buttons:
