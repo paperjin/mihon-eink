@@ -84,6 +84,8 @@ A fork of [Mihon](https://github.com/mihonapp/mihon) optimized for E-Ink Android
 
 ## 🛠️ Build from Source
 
+<div align="center">
+  
 ### Prerequisites
 
 - **Java 17** (Temurin recommended)
@@ -117,10 +119,11 @@ Create `local.properties` in the project root:
 ```properties
 sdk.dir=/home/youruser/Android/Sdk
 ```
-
 ---
 
 ## 📋 Roadmap & TODO
+
+<div align="left">
 
 ### ✅ Completed
 - Status Overlay (time, battery, WiFi, page count)
@@ -129,20 +132,19 @@ sdk.dir=/home/youruser/Android/Sdk
 - E-Ink dithering + bitmap filtering always enabled
 - **Volume Key Debounce** (600ms) - prevents double-presses on e-ink devices
 - **Settings Pagination** - Paginated settings with inline preferences per category, volume key navigation
+- **Library Pagination** - Replace infinite scroll with paginated views + volume key navigation (Vol Up/Down to turn pages, arrow buttons, configurable items per page)
+- Manga details → Page through chapters
+-   - ~~Settings screens~~ → ✅ **DONE** - Paginated with volume key navigation
 
 ### 🏗️ In Progress
-- **Library Pagination** - Replace infinite scroll with paginated views + volume key navigation (Vol Up/Down to turn pages, arrow buttons, configurable items per page)
 
 ### ❌ Future / Backlog
-- **De-Scroll the UI** - Replace ALL scrolling with pages/buttons:
-  - ~~Settings screens~~ → ✅ **DONE** - Paginated with volume key navigation
+  - **De-Scroll the UI** - Replace ALL scrolling with pages/buttons:
   - Browse/Sources → Paginated list
   - History → Paginated view
-  - Updates tab → Paginated chapters
-  - Manga details → Page through chapters
-  - Reader settings → Multi-page dialog
-- **E-Ink Optimizations** - Faster refresh rates, configurable animation durations, optional full-screen flash between UI changes
-- **Hardcoded Source Research** - Komanga compatibility, local file sources
+  - **E-Ink Optimizations** - Faster refresh rates, configurable animation durations, optional full-screen flash between UI changes
+
+</div>
 
 ---
 
