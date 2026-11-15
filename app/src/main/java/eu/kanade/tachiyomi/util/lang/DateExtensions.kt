@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.minus
+import kotlinx.datetime.daysUntil
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
@@ -12,23 +12,18 @@ import kotlinx.datetime.toLocalDateTime
 import tachiyomi.core.common.i18n.pluralStringResource
 import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.i18n.MR
-import java.text.DateFormat
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.Date
 import kotlin.math.absoluteValue
 import kotlin.time.Clock
 import kotlin.time.Instant
 
 fun LocalDateTime.toDateTimestampString(dateTimeFormatter: DateTimeFormatter): String {
     val javaLocalDateTime = this.toJavaLocalDateTime()
-    val date = dateTimeFormatter.format(javaLocalDateTime)
-    val time = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(javaLocalDateTime)
-    return "$date $time"
+    return dateTimeFormatter.format(javaLocalDateTime)
 }
 
-fun Date.toTimestampString(): String {
-    return DateFormat.getTimeInstance(DateFormat.SHORT).format(this)
+fun Instant.toTimestampString(timeFormatter: DateTimeFormatter): String {
+    return timeFormatter.format(toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime())
 }
 
 fun Long.convertEpochMillisZone(
@@ -42,23 +37,27 @@ fun Long.convertEpochMillisZone(
 }
 
 fun Long.toLocalDate(): LocalDate {
-    return Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.currentSystemDefault()).date
+    return Instant.fromEpochMilliseconds(this).toLocalDate()
 }
 
-fun Long.toJavaLocalDate(): java.time.LocalDate {
+fun Instant.toLocalDate(): LocalDate {
+    return toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
+fun Instant.toJavaLocalDate(): java.time.LocalDate {
     return this.toLocalDate().toJavaLocalDate()
 }
 
 fun LocalDate.toRelativeString(
     context: Context,
     relative: Boolean = true,
-    dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT),
+    dateFormat: DateTimeFormatter,
 ): String {
     if (!relative) {
         return dateFormat.format(this.toJavaLocalDate())
     }
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-    val difference = (today - this).days
+    val difference = this.daysUntil(today)
     return when {
         difference < -7 -> dateFormat.format(this.toJavaLocalDate())
         difference < 0 -> context.pluralStringResource(

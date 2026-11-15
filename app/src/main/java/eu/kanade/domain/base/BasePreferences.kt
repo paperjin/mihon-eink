@@ -2,11 +2,16 @@ package eu.kanade.domain.base
 
 import android.content.Context
 import dev.icerock.moko.resources.StringResource
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import eu.kanade.tachiyomi.util.system.GLUtil
 import tachiyomi.core.common.preference.Preference
 import tachiyomi.core.common.preference.PreferenceStore
 import tachiyomi.i18n.MR
 
+@Inject
+@SingleIn(AppScope::class)
 class BasePreferences(
     val context: Context,
     preferenceStore: PreferenceStore,
@@ -40,15 +45,15 @@ class BasePreferences(
         GLUtil.SAFE_TEXTURE_LIMIT,
     )
 
-    val alwaysDecodeLongStripWithSSIV: Preference<Boolean> = preferenceStore.getBoolean(
-        "pref_always_decode_long_strip_with_ssiv",
-        false,
-    )
-
     val installationId: Preference<String> = preferenceStore.getString(Preference.appStateKey("installation_id"), "")
 
     val donationCampaignShown: Preference<Boolean> = preferenceStore.getBoolean(
         Preference.appStateKey("donation_campaign_shown"),
         false,
+    )
+
+    val skippedAppUpdate: Preference<String> = preferenceStore.getString(
+        Preference.appStateKey("skipped_app_update"),
+        "",
     )
 }

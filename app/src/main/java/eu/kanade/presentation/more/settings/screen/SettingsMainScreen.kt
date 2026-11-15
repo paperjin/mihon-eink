@@ -1,54 +1,25 @@
 package eu.kanade.presentation.more.settings.screen
 
-import android.view.KeyEvent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ChromeReaderMode
-import androidx.compose.material.icons.outlined.Code
-import androidx.compose.material.icons.outlined.CollectionsBookmark
-import androidx.compose.material.icons.outlined.Explore
-import androidx.compose.material.icons.outlined.GetApp
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Palette
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Security
-import androidx.compose.material.icons.outlined.Storage
-import androidx.compose.material.icons.outlined.Sync
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.ColorUtils
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -57,11 +28,22 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import dev.icerock.moko.resources.StringResource
 import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.components.AppBarActions
-import eu.kanade.presentation.more.settings.PreferenceScreen
 import eu.kanade.presentation.more.settings.screen.about.AboutScreen
+import eu.kanade.presentation.more.settings.widget.TextPreferenceWidget
 import eu.kanade.presentation.util.LocalBackPress
 import eu.kanade.presentation.util.Screen
-import kotlinx.coroutines.launch
+import mihon.icons.materialsymbols.MaterialSymbols
+import mihon.icons.materialsymbols.automirroredrounded.ChromeReaderMode
+import mihon.icons.materialsymbols.rounded.Code
+import mihon.icons.materialsymbols.rounded.CollectionsBookmark
+import mihon.icons.materialsymbols.rounded.Download
+import mihon.icons.materialsymbols.rounded.Explore
+import mihon.icons.materialsymbols.rounded.Info
+import mihon.icons.materialsymbols.rounded.Palette
+import mihon.icons.materialsymbols.rounded.Search
+import mihon.icons.materialsymbols.rounded.Security
+import mihon.icons.materialsymbols.rounded.Storage
+import mihon.icons.materialsymbols.rounded.Sync
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
@@ -97,21 +79,6 @@ object SettingsMainScreen : Screen() {
         val containerColor = if (twoPane) getPalerSurface() else MaterialTheme.colorScheme.surface
         val topBarState = rememberTopAppBarState()
 
-        // E-Ink pagination state for settings categories
-        val settingsPagerState = rememberPagerState(
-            initialPage = 0,
-            pageCount = { items.size },
-        )
-
-        // Focus requester for volume key capture
-        val pagerFocusRequester = remember { FocusRequester() }
-
-        // Debounce state for volume keys (matches PagerViewer logic)
-        val lastVolumePressState = remember { mutableLongStateOf(0L) }
-        val debounceMs = 600L // 600ms debounce to prevent double-presses on e-ink
-
-        val scope = rememberCoroutineScope()
-
         Scaffold(
             topBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(topBarState),
             topBar = { scrollBehavior ->
@@ -123,7 +90,7 @@ object SettingsMainScreen : Screen() {
                             listOf(
                                 AppBar.Action(
                                     title = stringResource(MR.strings.action_search),
-                                    icon = Icons.Outlined.Search,
+                                    icon = MaterialSymbols.Rounded.Search,
                                     onClick = { navigator.navigate(SettingsSearchScreen(), twoPane) },
                                 ),
                             ),
@@ -134,68 +101,31 @@ object SettingsMainScreen : Screen() {
             },
             containerColor = containerColor,
             content = { contentPadding ->
-                // Focus for volume key capture
-                LaunchedEffect(Unit) {
-                    pagerFocusRequester.requestFocus()
+                val state = rememberLazyListState()
+                val indexSelected = if (twoPane) {
+                    items.indexOfFirst { it.screen::class == navigator.items.first()::class }
+                        .also {
+                            LaunchedEffect(Unit) {
+                                state.animateScrollToItem(it)
+                                if (it > 0) {
+                                    // Lift scroll
+                                    topBarState.contentOffset = topBarState.heightOffsetLimit
+                                }
+                            }
+                        }
+                } else {
+                    null
                 }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .focusRequester(pagerFocusRequester)
-                        .focusable()
-                        .onPreviewKeyEvent { event ->
-                            val now = System.currentTimeMillis()
-                            if (now - lastVolumePressState.longValue < debounceMs) {
-                                // Too soon, consume but don't action
-                                return@onPreviewKeyEvent true
-                            }
-
-                            when (event.nativeKeyEvent.keyCode) {
-                                KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                                    lastVolumePressState.longValue = now
-                                    // Volume down - next page
-                                    scope.launch {
-                                        if (settingsPagerState.currentPage < settingsPagerState.pageCount - 1) {
-                                            settingsPagerState.scrollToPage(settingsPagerState.currentPage + 1)
-                                        } else {
-                                            settingsPagerState.scrollToPage(0) // wraparound
-                                        }
-                                    }
-                                    true
-                                }
-                                KeyEvent.KEYCODE_VOLUME_UP -> {
-                                    lastVolumePressState.longValue = now
-                                    // Volume up - previous page
-                                    scope.launch {
-                                        if (settingsPagerState.currentPage > 0) {
-                                            settingsPagerState.scrollToPage(settingsPagerState.currentPage - 1)
-                                        } else {
-                                            // wraparound
-                                            settingsPagerState.scrollToPage(settingsPagerState.pageCount - 1)
-                                        }
-                                    }
-                                    true
-                                }
-                                else -> false
-                            }
-                        },
+                LazyColumn(
+                    state = state,
+                    contentPadding = contentPadding,
                 ) {
-                    // HorizontalPager for settings categories - e-ink friendly (no animations)
-                    // Each page now shows ALL settings for that category inline
-                    HorizontalPager(
-                        modifier = Modifier.weight(1f),
-                        state = settingsPagerState,
-                        verticalAlignment = Alignment.Top,
-                        beyondViewportPageCount = 1,
-                    ) { page ->
-                        val item = items[page]
-                        val selected = if (twoPane) {
-                            items.indexOfFirst { it.screen::class == navigator.items.first()::class } == page
-                        } else {
-                            false
-                        }
-
+                    itemsIndexed(
+                        items = items,
+                        key = { _, item -> item.hashCode() },
+                    ) { index, item ->
+                        val selected = indexSelected == index
                         var modifier: Modifier = Modifier
                         var contentColor = LocalContentColor.current
                         if (twoPane) {
@@ -213,79 +143,15 @@ object SettingsMainScreen : Screen() {
                                 contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                             }
                         }
-
                         CompositionLocalProvider(LocalContentColor provides contentColor) {
-                            // Render category header + all settings inline
-                            Column(
-                                modifier = modifier.padding(contentPadding),
-                            ) {
-                                // Category header
-                                Text(
-                                    text = stringResource(item.titleRes),
-                                    style = MaterialTheme.typography.titleMedium,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                                )
-
-                                // Render all settings for this category inline
-                                // Only screens implementing SearchableSettings have getPreferences()
-                                val preferences = when (item.screen) {
-                                    SettingsAppearanceScreen -> SettingsAppearanceScreen.getPreferences()
-                                    SettingsLibraryScreen -> SettingsLibraryScreen.getPreferences()
-                                    SettingsReaderScreen -> SettingsReaderScreen.getPreferences()
-                                    SettingsDownloadScreen -> SettingsDownloadScreen.getPreferences()
-                                    SettingsTrackingScreen -> SettingsTrackingScreen.getPreferences()
-                                    SettingsBrowseScreen -> SettingsBrowseScreen.getPreferences()
-                                    SettingsDataScreen -> SettingsDataScreen.getPreferences()
-                                    SettingsSecurityScreen -> SettingsSecurityScreen.getPreferences()
-                                    SettingsAdvancedScreen -> SettingsAdvancedScreen.getPreferences()
-                                    else -> emptyList()
-                                }
-
-                                PreferenceScreen(
-                                    items = preferences,
-                                    contentPadding = PaddingValues(0.dp),
-                                )
-                            }
-                        }
-                    }
-
-                    // Page indicators at the bottom (dots + numbers)
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 8.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        // Dot indicators
-                        repeat(settingsPagerState.pageCount) { page ->
-                            Box(
-                                modifier = Modifier
-                                    .size(if (page == settingsPagerState.currentPage) 12.dp else 8.dp)
-                                    .clip(RoundedCornerShape(4.dp))
-                                    .background(
-                                        if (page == settingsPagerState.currentPage) {
-                                            MaterialTheme.colorScheme.primary
-                                        } else {
-                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                                        },
-                                    ),
+                            TextPreferenceWidget(
+                                modifier = modifier,
+                                title = stringResource(item.titleRes),
+                                subtitle = item.formatSubtitle(),
+                                icon = item.icon,
+                                onPreferenceClick = { navigator.navigate(item.screen, twoPane) },
                             )
-                            if (page < settingsPagerState.pageCount - 1) {
-                                Box(modifier = Modifier.padding(horizontal = 4.dp))
-                            }
                         }
-
-                        // Spacer between dots and numbers
-                        Box(modifier = Modifier.padding(horizontal = 16.dp))
-
-                        // Page number indicator
-                        Text(
-                            text = "${settingsPagerState.currentPage + 1} / ${settingsPagerState.pageCount}",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                        )
                     }
                 }
             },
@@ -308,55 +174,55 @@ object SettingsMainScreen : Screen() {
         Item(
             titleRes = MR.strings.pref_category_appearance,
             subtitleRes = MR.strings.pref_appearance_summary,
-            icon = Icons.Outlined.Palette,
+            icon = MaterialSymbols.Rounded.Palette,
             screen = SettingsAppearanceScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_library,
             subtitleRes = MR.strings.pref_library_summary,
-            icon = Icons.Outlined.CollectionsBookmark,
+            icon = MaterialSymbols.Rounded.CollectionsBookmark,
             screen = SettingsLibraryScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_reader,
             subtitleRes = MR.strings.pref_reader_summary,
-            icon = Icons.AutoMirrored.Outlined.ChromeReaderMode,
+            icon = MaterialSymbols.AutoMirroredRounded.ChromeReaderMode,
             screen = SettingsReaderScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_downloads,
             subtitleRes = MR.strings.pref_downloads_summary,
-            icon = Icons.Outlined.GetApp,
+            icon = MaterialSymbols.Rounded.Download,
             screen = SettingsDownloadScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_tracking,
             subtitleRes = MR.strings.pref_tracking_summary,
-            icon = Icons.Outlined.Sync,
+            icon = MaterialSymbols.Rounded.Sync,
             screen = SettingsTrackingScreen,
         ),
         Item(
             titleRes = MR.strings.browse,
             subtitleRes = MR.strings.pref_browse_summary,
-            icon = Icons.Outlined.Explore,
+            icon = MaterialSymbols.Rounded.Explore,
             screen = SettingsBrowseScreen,
         ),
         Item(
             titleRes = MR.strings.label_data_storage,
             subtitleRes = MR.strings.pref_backup_summary,
-            icon = Icons.Outlined.Storage,
+            icon = MaterialSymbols.Rounded.Storage,
             screen = SettingsDataScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_security,
             subtitleRes = MR.strings.pref_security_summary,
-            icon = Icons.Outlined.Security,
+            icon = MaterialSymbols.Rounded.Security,
             screen = SettingsSecurityScreen,
         ),
         Item(
             titleRes = MR.strings.pref_category_advanced,
             subtitleRes = MR.strings.pref_advanced_summary,
-            icon = Icons.Outlined.Code,
+            icon = MaterialSymbols.Rounded.Code,
             screen = SettingsAdvancedScreen,
         ),
         Item(
@@ -364,7 +230,7 @@ object SettingsMainScreen : Screen() {
             formatSubtitle = {
                 "${stringResource(MR.strings.app_name)} ${AboutScreen.getVersionName(withBuildDate = false)}"
             },
-            icon = Icons.Outlined.Info,
+            icon = MaterialSymbols.Rounded.Info,
             screen = AboutScreen,
         ),
     )
