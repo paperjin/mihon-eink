@@ -27,6 +27,11 @@ class SourcePreferences(
         LibraryDisplayMode.Serializer::deserialize,
     )
 
+    // E-Ink pagination
+    val sourcePagination: Preference<Boolean> = preferenceStore.getBoolean("pref_source_pagination_eink", false)
+
+    val sourcePageItems: Preference<Int> = preferenceStore.getInt("pref_source_page_items", 12)
+
     val enabledLanguages: Preference<Set<String>> = preferenceStore.getStringSet(
         "source_languages",
         LocaleHelper.getDefaultEnabledLanguages(),

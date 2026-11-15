@@ -224,6 +224,8 @@ data class BrowseSourceScreen(
                 onHelpClick = { uriHandler.openUri(Constants.URL_HELP) },
                 onLocalSourceHelpClick = onHelpClick,
                 onMangaClick = { navigator.push((MangaScreen(it.id, true))) },
+                isPaginationEnabled = viewModel.isPaginationEnabled,
+                pageItems = viewModel.pageItems,
                 onMangaLongClick = { manga ->
                     scope.launch(Dispatchers.IO) {
                         val duplicates = viewModel.getDuplicateLibraryManga(manga)

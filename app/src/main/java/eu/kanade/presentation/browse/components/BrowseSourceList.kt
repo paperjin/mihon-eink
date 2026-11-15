@@ -21,7 +21,15 @@ fun BrowseSourceList(
     contentPadding: PaddingValues,
     onMangaClick: (Manga) -> Unit,
     onMangaLongClick: (Manga) -> Unit,
+    pageStart: Int = 0,
+    pageSize: Int? = null,
 ) {
+    val visibleCount = if (pageSize != null) {
+        ((mangaList.itemCount - pageStart).coerceAtLeast(0)).coerceAtMost(pageSize)
+    } else {
+        mangaList.itemCount
+    }
+
     LazyColumn(
         contentPadding = contentPadding + PaddingValues(vertical = 8.dp),
     ) {
@@ -31,8 +39,9 @@ fun BrowseSourceList(
             }
         }
 
-        items(count = mangaList.itemCount) { index ->
-            val manga by mangaList[index]?.collectAsState() ?: return@items
+        items(count = visibleCount) { index ->
+            val realIndex = pageStart + index
+            val manga by mangaList[realIndex]?.collectAsState() ?: return@items
             BrowseSourceListItem(
                 manga = manga,
                 onClick = { onMangaClick(manga) },

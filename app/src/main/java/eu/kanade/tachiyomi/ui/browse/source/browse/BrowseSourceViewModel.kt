@@ -94,6 +94,10 @@ class BrowseSourceViewModel(
 
     var displayMode by sourcePreferences.sourceDisplayMode.asState(viewModelScope)
 
+    val isPaginationEnabled by sourcePreferences.sourcePagination.asState(viewModelScope)
+
+    val pageItems by sourcePreferences.sourcePageItems.asState(viewModelScope)
+
     private val source: Source? get() = state.value.source
 
     init {

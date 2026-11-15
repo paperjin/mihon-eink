@@ -15,6 +15,7 @@ import androidx.paging.compose.LazyPagingItems
 import eu.kanade.presentation.browse.components.BrowseSourceComfortableGrid
 import eu.kanade.presentation.browse.components.BrowseSourceCompactGrid
 import eu.kanade.presentation.browse.components.BrowseSourceList
+import eu.kanade.presentation.browse.components.BrowseSourcePager
 import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.util.formattedMessage
 import eu.kanade.tachiyomi.source.Source
@@ -48,6 +49,8 @@ fun BrowseSourceContent(
     onLocalSourceHelpClick: () -> Unit,
     onMangaClick: (Manga) -> Unit,
     onMangaLongClick: (Manga) -> Unit,
+    isPaginationEnabled: Boolean = false,
+    pageItems: Int = 12,
 ) {
     val context = LocalContext.current
 
@@ -113,6 +116,19 @@ fun BrowseSourceContent(
             },
         )
 
+        return
+    }
+
+    if (isPaginationEnabled) {
+        BrowseSourcePager(
+            mangaList = mangaList,
+            columns = columns,
+            displayMode = displayMode,
+            contentPadding = contentPadding,
+            pageItems = pageItems,
+            onMangaClick = onMangaClick,
+            onMangaLongClick = onMangaLongClick,
+        )
         return
     }
 

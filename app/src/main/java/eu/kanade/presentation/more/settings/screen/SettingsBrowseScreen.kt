@@ -53,6 +53,27 @@ object SettingsBrowseScreen : SearchableSettings {
                 ),
             ),
             Preference.PreferenceGroup(
+                title = "E-Ink pagination",
+                preferenceItems = listOf(
+                    Preference.PreferenceItem.SwitchPreference(
+                        preference = sourcePreferences.sourcePagination,
+                        title = "Paginate source catalog",
+                        subtitle = "Show source results a page at a time instead of infinite scroll",
+                    ),
+                    Preference.PreferenceItem.ListPreference(
+                        preference = sourcePreferences.sourcePageItems,
+                        entries = mapOf(
+                            6 to "6 items/page",
+                            12 to "12 items/page",
+                            18 to "18 items/page",
+                            24 to "24 items/page",
+                        ),
+                        title = "Items per page",
+                        subtitle = "How many items to show per page in E-Ink mode",
+                    ),
+                ),
+            ),
+            Preference.PreferenceGroup(
                 title = stringResource(MR.strings.pref_category_extensions),
                 preferenceItems = listOf(
                     Preference.PreferenceItem.MultiSelectListPreference(
