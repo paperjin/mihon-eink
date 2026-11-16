@@ -201,7 +201,7 @@ class LibraryPreferences(
     )
 
     // E-Ink pagination
-    fun libraryPagination() = preferenceStore.getBoolean("pref_library_pagination_eink", false)
+    fun libraryPagination() = preferenceStore.getBoolean("pref_library_pagination_eink", true)
     fun libraryPageItems() = preferenceStore.getInt("pref_library_page_items", 12)
     // endregion
 

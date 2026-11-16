@@ -28,7 +28,7 @@ class SourcePreferences(
     )
 
     // E-Ink pagination
-    val sourcePagination: Preference<Boolean> = preferenceStore.getBoolean("pref_source_pagination_eink", false)
+    val sourcePagination: Preference<Boolean> = preferenceStore.getBoolean("pref_source_pagination_eink", true)
 
     val sourcePageItems: Preference<Int> = preferenceStore.getInt("pref_source_page_items", 12)
 
