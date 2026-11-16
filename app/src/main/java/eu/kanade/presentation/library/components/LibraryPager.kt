@@ -17,9 +17,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedIconButton
@@ -42,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import eu.kanade.core.preference.PreferenceMutableState
 import eu.kanade.tachiyomi.ui.library.LibraryItem
 import kotlinx.coroutines.launch
+import mihon.icons.materialsymbols.MaterialSymbols
+import mihon.icons.materialsymbols.automirroredrounded.ArrowBack
+import mihon.icons.materialsymbols.automirroredrounded.ArrowForward
 import tachiyomi.domain.category.model.Category
 import tachiyomi.domain.library.model.LibraryDisplayMode
 import tachiyomi.domain.library.model.LibraryManga
@@ -268,7 +268,7 @@ fun LibraryPager(
                             modifier = Modifier.size(36.dp), // Smaller button
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                imageVector = MaterialSymbols.AutoMirroredRounded.ArrowBack,
                                 contentDescription = "Previous page",
                                 modifier = Modifier.size(18.dp), // Smaller icon
                                 tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,
@@ -295,7 +295,7 @@ fun LibraryPager(
                             modifier = Modifier.size(36.dp), // Smaller button
                         ) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                imageVector = MaterialSymbols.AutoMirroredRounded.ArrowForward,
                                 contentDescription = "Next page",
                                 modifier = Modifier.size(18.dp), // Smaller icon
                                 tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurface,

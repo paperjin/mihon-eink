@@ -1,5 +1,8 @@
 package tachiyomi.domain.library.service
 
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.SingleIn
 import tachiyomi.core.common.preference.Preference
 import tachiyomi.core.common.preference.PreferenceStore
 import tachiyomi.core.common.preference.TriState
@@ -8,6 +11,8 @@ import tachiyomi.domain.library.model.LibraryDisplayMode
 import tachiyomi.domain.library.model.LibrarySort
 import tachiyomi.domain.manga.model.Manga
 
+@Inject
+@SingleIn(AppScope::class)
 class LibraryPreferences(
     private val preferenceStore: PreferenceStore,
 ) {
@@ -196,7 +201,7 @@ class LibraryPreferences(
     )
 
     // E-Ink pagination
-    fun libraryPagination() = preferenceStore.getBoolean("pref_library_pagination_eink", false)
+    fun libraryPagination() = preferenceStore.getBoolean("pref_library_pagination_eink", true)
     fun libraryPageItems() = preferenceStore.getInt("pref_library_page_items", 12)
     // endregion
 
@@ -216,6 +221,10 @@ class LibraryPreferences(
 
     val disallowNonAsciiFilenames: Preference<Boolean> = preferenceStore.getBoolean(
         "disallow_non_ascii_filenames",
+        false,
+    )
+    val enableChapterNameHash: Preference<Boolean> = preferenceStore.getBoolean(
+        "pref_enable_chapter_name_hash",
         false,
     )
 
